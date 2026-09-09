@@ -78,7 +78,7 @@ app.put('/api/projects/:id', async (req, res) => {
   }
 })
 
-// ================= MONGODB CONNECTION =================
+// ================= CONNECT TO MONGODB =================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -86,26 +86,11 @@ mongoose
 
     const PORT = process.env.PORT || 5001
 
-    app.listen(PORT, '127.0.0.1', () => {
-      console.log(`Server running on http://127.0.0.1:${PORT}`)
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`)
     })
   })
   .catch((error) => {
     console.error('MongoDB connection failed ❌')
     console.error(error)
   })
-  app.get('/fix-project-1', async (req, res) => {
-  try {
-    const project = await Project.findByIdAndUpdate(
-      '6aa13b3667b86304078d9c4c',
-      {
-        githubUrl: 'https' + '://' + 'github.com/siddu-varma/Predictive-Modeling-Using-Machine-Learning'
-      },
-      { new: true }
-    )
-
-    res.json(project)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-})
